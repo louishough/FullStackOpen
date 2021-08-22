@@ -1,62 +1,51 @@
 import React from 'react';
 
 const App = () => {
-  const course = 'Half Stack application development';
-  const part1 = 'Fundamentals of React';
-  const exercises1 = 10;
-  const part2 = 'Using props to pass data';
-  const exercises2 = 7;
-  const part3 = 'State of a component';
-  const exercises3 = 14;
-  let total = exercises1 + exercises2 + exercises3;
+  const course = {
+    name: 'Half Stack application development',
+    parts: [
+      { name: 'Fundamentals of React', exercises: 10 },
+      { name: 'Using props to pass data', exercises: 7 },
+      { name: 'State of a component', exercises: 14 }
+    ]
+  };
 
   return (
     <div>
       <Header course={course} />
-      <Content
-        part1={part1}
-        part2={part2}
-        part3={part3}
-        exercises1={exercises1}
-        exercises2={exercises2}
-        exercises3={exercises3}
-      />
-      <Total total={total} />
+      <Content course={course} />
+      <Total course={course} />
     </div>
   );
 };
 
 const Header = ({ course }) => {
-  return <h1>{course}</h1>;
+  return <h1>{course.name}</h1>;
 };
 
-const Total = ({ total }) => {
-  return <p>Number of exercises {total}</p>;
-};
-
-const Part = ({ title, count }) => {
+const Part = ({ course, partNumber }) => {
   return (
     <p>
-      {title} {count}
+      {course.parts[partNumber - 1].name}{' '}
+      {course.parts[partNumber - 1].exercises}
     </p>
   );
 };
 
-const Content = ({
-  part1,
-  part2,
-  part3,
-  exercises1,
-  exercises2,
-  exercises3
-}) => {
+const Content = ({ course }) => {
   return (
     <>
-      <Part title={part1} count={exercises1} />
-      <Part title={part2} count={exercises2} />
-      <Part title={part3} count={exercises3} />
+      <Part course={course} partNumber={1} />
+      <Part course={course} partNumber={2} />
+      <Part course={course} partNumber={3} />
     </>
   );
+};
+
+const Total = ({ course }) => {
+  let count = 0;
+  course.parts.forEach((part) => (count += part.exercises));
+  return <p>Total Courses: {count}</p>;
 };
 
 export default App;
